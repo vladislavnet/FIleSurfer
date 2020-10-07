@@ -8,27 +8,27 @@
         Title="FileSurfer" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="310"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Vertical">
-            <StackPanel Orientation="Horizontal" >
+        <StackPanel Orientation="Vertical" Width="300" Margin="0,10,0,0">
+            <StackPanel Orientation="Horizontal"  Margin="0,0,0,5">
                 <Label Content="Адрес сервера:" Width="100"/>
-                <TextBox Width="200"/>
+                <TextBox x:Name="txtAddressServer" Width="200"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" >
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                 <Label Content="Логин:" Width="100"/>
-                <TextBox Width="200"/>
+                <TextBox x:Name="txtLogin" Width="200"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" >
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                 <Label Content="Пароль:" Width="100"/>
-                <TextBox Width="200"/>
+                <TextBox x:Name="txtPassword" Width="200"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" >
+            <StackPanel Orientation="Horizontal">
                 <Label Content="Анонимно:" Width="100"/>
-                <CheckBox VerticalAlignment="Center"/>
+                <CheckBox x:Name="cbAnonymous" VerticalAlignment="Center"/>
             </StackPanel>
-            <Button Content="Войти" Width="100" Height="30"/>
+            <Button x:Name="btnConnect" Content="Войти" Width="100" Height="30" Margin="0,20,0,0"/>
         </StackPanel>
     </Grid>
 </Window>
