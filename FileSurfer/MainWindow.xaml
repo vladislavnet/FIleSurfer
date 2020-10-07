@@ -5,8 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FileSurfer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="FileSurfer" Height="450" Width="800">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal" >
+                <Label Content="Адрес сервера:" Width="100"/>
+                <TextBox Width="200"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" >
+                <Label Content="Логин:" Width="100"/>
+                <TextBox Width="200"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" >
+                <Label Content="Пароль:" Width="100"/>
+                <TextBox Width="200"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" >
+                <Label Content="Анонимно:" Width="100"/>
+                <CheckBox VerticalAlignment="Center"/>
+            </StackPanel>
+            <Button Content="Войти" Width="100" Height="30"/>
+        </StackPanel>
     </Grid>
 </Window>
