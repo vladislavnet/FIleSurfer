@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -28,12 +29,48 @@ namespace FileSurfer
 
         public string[] ListDirectory()
         {
-            return null;
+            FtpWebRequest request = createRequest(WebRequestMethods.Ftp.ListDirectory);
+
+            List<string> directories = new List<string>();
+
+            using (var response = (FtpWebResponse)request.GetResponse())
+            {
+                using (var stream = response.GetResponseStream())
+                {
+                    using (var reader = new StreamReader(stream, true))
+                    {
+                        while (!reader.EndOfStream)
+                        {
+                            directories.Add(reader.ReadLine());
+                        }
+                    }
+                }
+            }
+
+            return directories.ToArray();
         }
 
         public string[] ListDirectoryDetails()
         {
-            return null;
+            var request = createRequest(WebRequestMethods.Ftp.ListDirectoryDetails);
+
+            var directoryDetails = new List<string>();
+
+            using (var response = (FtpWebResponse)request.GetResponse())
+            {
+                using (var stream = response.GetResponseStream())
+                {
+                    using (var reader = new StreamReader(stream, true))
+                    {
+                        while (!reader.EndOfStream)
+                        {
+                            directoryDetails.Add(reader.ReadLine());
+                        }
+                    }
+                }
+            }
+
+            return directoryDetails.ToArray();
         }
 
         private FtpWebRequest createRequest(string method)
