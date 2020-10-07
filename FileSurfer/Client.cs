@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,6 +34,24 @@ namespace FileSurfer
         public string[] ListDirectoryDetails()
         {
             return null;
+        }
+
+        private FtpWebRequest createRequest(string method)
+        {
+            return createRequest(uri, method);
+        }
+
+        private FtpWebRequest createRequest(string uri, string method)
+        {
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(uri);
+
+            request.Credentials = new NetworkCredential(login, password);
+            request.Method = method;
+            request.UseBinary = IsBinary;
+            request.EnableSsl = IsEnableSSL;
+            request.UsePassive = IsPassive;
+
+            return request;
         }
     }
 }
