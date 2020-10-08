@@ -27,6 +27,32 @@ namespace FileSurfer
         public bool IsEnableSSL { get; set; } = false;
         public bool IsHash { get; set; } = false;
 
+        public string ChangeWorkingDirectory(string path)
+        {
+            uri = combinePath(uri, path);
+
+            return PrintWorkingDirectory();
+        }
+
+        public string PrintWorkingDirectory()
+        {
+            var request = createRequest(WebRequestMethods.Ftp.PrintWorkingDirectory);
+
+            return getStatus(request);
+        }
+
+        public long GetFileSize(string fileName)
+        {
+            var request = createRequest(combinePath(uri, fileName), WebRequestMethods.Ftp.GetFileSize);
+
+            long contentLegnth = 0;
+            using (var response = (FtpWebResponse)request.GetResponse())
+            {
+                contentLegnth =  response.ContentLength;
+            }
+            return contentLegnth;
+        }
+
         public string[] ListDirectory()
         {
             FtpWebRequest request = createRequest(WebRequestMethods.Ftp.ListDirectory);
@@ -73,6 +99,7 @@ namespace FileSurfer
             return directoryDetails.ToArray();
         }
 
+
         private FtpWebRequest createRequest(string method)
         {
             return createRequest(uri, method);
@@ -91,19 +118,17 @@ namespace FileSurfer
             return request;
         }
 
-        public string PrintWorkingDirectory()
-        {
-            var request = createRequest(WebRequestMethods.Ftp.PrintWorkingDirectory);
-
-            return getStatus(request);
-        }
-
         private string getStatus(FtpWebRequest request)
         {
             using (var response = (FtpWebResponse)request.GetResponse())
             {
                 return response.StatusDescription;
             }
+        }
+
+        private string combinePath(string path1, string path2)
+        {
+            return Path.Combine(path1, path2).Replace("\\", "/");
         }
     }
 }
