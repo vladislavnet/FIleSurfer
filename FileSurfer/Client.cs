@@ -91,6 +91,13 @@ namespace FileSurfer
             return request;
         }
 
+        public string PrintWorkingDirectory()
+        {
+            var request = createRequest(WebRequestMethods.Ftp.PrintWorkingDirectory);
+
+            return getStatus(request);
+        }
+
         private string getStatus(FtpWebRequest request)
         {
             using (var response = (FtpWebResponse)request.GetResponse())
