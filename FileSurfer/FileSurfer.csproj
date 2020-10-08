@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -99,6 +100,19 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Img\Folder.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Img\TXT.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Img\Video.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Img\ZIP.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
