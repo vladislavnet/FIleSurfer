@@ -90,5 +90,13 @@ namespace FileSurfer
 
             return request;
         }
+
+        private string getStatus(FtpWebRequest request)
+        {
+            using (var response = (FtpWebResponse)request.GetResponse())
+            {
+                return response.StatusDescription;
+            }
+        }
     }
 }
