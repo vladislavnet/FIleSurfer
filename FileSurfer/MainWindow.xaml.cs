@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,6 +21,13 @@ namespace FileSurfer
     /// </summary>
     public partial class MainWindow : Window
     {
+        // Регулярное выражение, которое ищет информацию о папках и файлах 
+        // в строке ответа от сервера
+        Regex regex = new Regex(@"^([d-])([rwxt-]{3}){3}\s+\d{1,}\s+.*?(\d{1,})\s+(\w+\s+\d{1,2}\s+(?:\d{4})?)(\d{1,2}:\d{2})?\s+(.+?)\s?$",
+            RegexOptions.Compiled 
+            | RegexOptions.Multiline 
+            | RegexOptions.IgnoreCase 
+            | RegexOptions.IgnorePatternWhitespace);
         public MainWindow()
         {
             InitializeComponent();
