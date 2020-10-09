@@ -95,6 +95,13 @@ namespace FileSurfer
             return statusRespose;
         }
 
+        public string DeleteFile(string fileName)
+        {
+            var request = createRequest(combinePath(uri, fileName), WebRequestMethods.Ftp.DeleteFile);
+
+            return getStatus(request);
+        }
+
         public string[] ListDirectory()
         {
             FtpWebRequest request = createRequest(WebRequestMethods.Ftp.ListDirectory);
