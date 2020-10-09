@@ -191,6 +191,32 @@ namespace FileSurfer
             return getStatus(request);
         }
 
+        public string UploadFileWithUniqueName(string source)
+        {
+            var request = createRequest(WebRequestMethods.Ftp.UploadFileWithUniqueName);
+
+            using (var stream = request.GetRequestStream())
+            {
+                using (var fs = File.Open(source, FileMode.Open))
+                {
+                    int count = 0;
+                    byte[] buffer = new byte[bufferSize];
+
+                    while ((count = fs.Read(buffer, 0, buffer.Length)) > 0)
+                    {
+                        stream.Write(buffer, 0, count);
+                    }
+                }
+            }
+
+            string fileName = string.Empty;
+            using (var response = (FtpWebResponse)request.GetResponse())
+            {
+                fileName = Path.GetFileName(response.ResponseUri.ToString());
+            }
+            return fileName;
+        }
+
         private FtpWebRequest createRequest(string method)
         {
             return createRequest(uri, method);
