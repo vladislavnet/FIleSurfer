@@ -56,11 +56,43 @@ namespace FileSurfer
         public DateTime GetDateTimestamp(string fileName)
         {
             var request = createRequest(combinePath(uri, fileName), WebRequestMethods.Ftp.GetDateTimestamp);
+            DateTime lastModify;
+            using (var response = (FtpWebResponse)request.GetResponse())
+            {
+                lastModify = response.LastModified;
+            }
+            return lastModify;
+        }
+
+        public string DownloadFile(string source, string dest)
+        {
+            var request = createRequest(combinePath(uri, source), WebRequestMethods.Ftp.DownloadFile);
+            string statusRespose = string.Empty;
+            byte[] buffer = new byte[bufferSize];
 
             using (var response = (FtpWebResponse)request.GetResponse())
             {
-                return response.LastModified;
+                using (var stream = response.GetResponseStream())
+                {
+                    using (var fs = new FileStream(dest, FileMode.OpenOrCreate))
+                    {
+                        int readCount = stream.Read(buffer, 0, bufferSize);
+
+                        while (readCount > 0)
+                        {
+                            if (IsHash)
+                                Console.Write("#");
+
+                            fs.Write(buffer, 0, readCount);
+                            readCount = stream.Read(buffer, 0, bufferSize);
+                        }
+                    }
+                }
+
+                statusRespose = response.StatusDescription;
             }
+
+            return statusRespose;
         }
 
         public string[] ListDirectory()
