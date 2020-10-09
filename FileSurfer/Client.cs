@@ -53,6 +53,16 @@ namespace FileSurfer
             return contentLegnth;
         }
 
+        public DateTime GetDateTimestamp(string fileName)
+        {
+            var request = createRequest(combinePath(uri, fileName), WebRequestMethods.Ftp.GetDateTimestamp);
+
+            using (var response = (FtpWebResponse)request.GetResponse())
+            {
+                return response.LastModified;
+            }
+        }
+
         public string[] ListDirectory()
         {
             FtpWebRequest request = createRequest(WebRequestMethods.Ftp.ListDirectory);
