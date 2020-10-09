@@ -64,37 +64,6 @@ namespace FileSurfer
             return lastModify;
         }
 
-        public string DownloadFile(string source, string dest)
-        {
-            var request = createRequest(combinePath(uri, source), WebRequestMethods.Ftp.DownloadFile);
-            string statusRespose = string.Empty;
-            byte[] buffer = new byte[bufferSize];
-
-            using (var response = (FtpWebResponse)request.GetResponse())
-            {
-                using (var stream = response.GetResponseStream())
-                {
-                    using (var fs = new FileStream(dest, FileMode.OpenOrCreate))
-                    {
-                        int readCount = stream.Read(buffer, 0, bufferSize);
-
-                        while (readCount > 0)
-                        {
-                            if (IsHash)
-                                Console.Write("#");
-
-                            fs.Write(buffer, 0, readCount);
-                            readCount = stream.Read(buffer, 0, bufferSize);
-                        }
-                    }
-                }
-
-                statusRespose = response.StatusDescription;
-            }
-
-            return statusRespose;
-        }
-
         public string DeleteFile(string fileName)
         {
             var request = createRequest(combinePath(uri, fileName), WebRequestMethods.Ftp.DeleteFile);
@@ -170,6 +139,57 @@ namespace FileSurfer
             return directoryDetails.ToArray();
         }
 
+        public string DownloadFile(string source, string dest)
+        {
+            var request = createRequest(combinePath(uri, source), WebRequestMethods.Ftp.DownloadFile);
+            string statusRespose = string.Empty;
+            byte[] buffer = new byte[bufferSize];
+
+            using (var response = (FtpWebResponse)request.GetResponse())
+            {
+                using (var stream = response.GetResponseStream())
+                {
+                    using (var fs = new FileStream(dest, FileMode.OpenOrCreate))
+                    {
+                        int readCount = stream.Read(buffer, 0, bufferSize);
+
+                        while (readCount > 0)
+                        {
+                            if (IsHash)
+                                Console.Write("#");
+
+                            fs.Write(buffer, 0, readCount);
+                            readCount = stream.Read(buffer, 0, bufferSize);
+                        }
+                    }
+                }
+
+                statusRespose = response.StatusDescription;
+            }
+
+            return statusRespose;
+        }
+
+        public string UploadFile(string source, string destination)
+        {
+            var request = createRequest(combinePath(uri, destination), WebRequestMethods.Ftp.UploadFile);
+
+            using (var stream = request.GetRequestStream())
+            {
+                using(var fs = File.Open(source, FileMode.Open))
+                {
+                    int count = 0;
+                    byte[] buffer = new byte[bufferSize];
+
+                    while((count = fs.Read(buffer, 0, buffer.Length)) > 0)
+                    {
+                        stream.Write(buffer, 0, count);
+                    }
+                }
+            }
+
+            return getStatus(request);
+        }
 
         private FtpWebRequest createRequest(string method)
         {
