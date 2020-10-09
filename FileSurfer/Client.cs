@@ -110,6 +110,13 @@ namespace FileSurfer
             return getStatus(request);
         }
 
+        public string MakeDirectory(string directoryName)
+        {
+            var request = createRequest(combinePath(uri, directoryName), WebRequestMethods.Ftp.MakeDirectory);
+
+            return getStatus(request);
+        }
+
         public string[] ListDirectory()
         {
             FtpWebRequest request = createRequest(WebRequestMethods.Ftp.ListDirectory);
