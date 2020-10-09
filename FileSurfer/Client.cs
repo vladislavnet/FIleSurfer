@@ -102,6 +102,14 @@ namespace FileSurfer
             return getStatus(request);
         }
 
+        public string Rename(string currentName, string newName)
+        {
+            var request = createRequest(combinePath(uri, currentName), WebRequestMethods.Ftp.Rename);
+            request.RenameTo = newName;
+
+            return getStatus(request);
+        }
+
         public string[] ListDirectory()
         {
             FtpWebRequest request = createRequest(WebRequestMethods.Ftp.ListDirectory);
