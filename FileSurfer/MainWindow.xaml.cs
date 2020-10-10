@@ -44,7 +44,7 @@ namespace FileSurfer
             try
             {
                 client = createClient();
-                //List<FileDirectoryInfo> list = getListDirectoryDetails();
+                List<FileDirectoryInfo> list = getListDirectoryDetails();
                
             }
             catch (Exception ex)
@@ -63,17 +63,35 @@ namespace FileSurfer
                 return new Client(txtAddressServer.Text, txtLogin.Text, txtPassword.Password);
         }
 
-        //private List<FileDirectoryInfo> getListDirectoryDetails()
-        //{
-        //    return client.ListDirectoryDetails()
-        //                    .Select(x =>
-        //                    {
-        //                        Match match = regex.Match(x);
-        //                        if (match.Length > 5)
-        //                        {
-                            
-        //                        }
-        //                    });
-        //}
+        private List<FileDirectoryInfo> getListDirectoryDetails()
+        {
+            List<FileDirectoryInfo> list = client.ListDirectoryDetails()
+                            .Select(x =>
+                            {
+                                Match match = regex.Match(x);
+                                if (match.Length > 5)
+                                {
+                                    string type = isDirectory(match.Groups[1].Value) ? "Resources/Img/Folder.ico" : getTypeImage(match.Groups[1].Value);
+                                    string size = string.Empty;
+                                    if (!isDirectory(match.Groups[1].Value))
+                                        size = (Int32.Parse(match.Groups[3].Value.Trim()) / 1024).ToString() + " кБ";
+
+                                    return new FileDirectoryInfo(size, type, match.Groups[6].Value, match.Groups[4].Value, txtAddressServer.Text);
+                                }
+                                else return new FileDirectoryInfo();
+                            }).ToList();
+            list.Add(new FileDirectoryInfo("", "Resources/Img/Folder.ico", "...", "", txtAddressServer.Text));
+            return list;
+        }
+
+        private bool isDirectory(string value)
+        {
+            return value == "d";
+        }
+
+        private string getTypeImage(string value)
+        {
+            return "Resources/Img/TXT.ico";
+        }
     }
 }

@@ -9,7 +9,7 @@ namespace FileSurfer
     public class FileDirectoryInfo
     {
         public FileDirectoryInfo() { }
-        public FileDirectoryInfo(string name, string type, string adress, string fileSize, string date)
+        public FileDirectoryInfo(string fileSize, string type, string name, string date, string adress)
         {
             Size = fileSize;
             Type = type;
