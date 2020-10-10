@@ -28,7 +28,7 @@
                 <Label Content="Анонимно:" Width="100"/>
                 <CheckBox x:Name="cbAnonymous" VerticalAlignment="Center"/>
             </StackPanel>
-            <Button x:Name="btnConnect" Content="Войти" Width="100" Height="30" Margin="0,20,0,0"/>
+            <Button x:Name="btnConnect" Click="connectServer" Content="Войти" Width="100" Height="30" Margin="0,20,0,0"/>
         </StackPanel>
         <ListView Grid.Column="1" Margin="5" x:Name="lvFiles">
             <ListView.View>

@@ -28,6 +28,12 @@ namespace FileSurfer
             | RegexOptions.Multiline 
             | RegexOptions.IgnoreCase 
             | RegexOptions.IgnorePatternWhitespace);
+
+        //Данные для ананимного входа на сервер
+        private string anonymousLogin = "anonymous";
+        private string anonymousPassword = "anonymous@testingdomain.com";
+
+        private Client client;
         public MainWindow()
         {
             InitializeComponent();
@@ -37,13 +43,37 @@ namespace FileSurfer
         {
             try
             {
-                Client client = new Client(txtAddressServer.Text, txtLogin.Text, txtPassword.Password);
-
+                client = createClient();
+                //List<FileDirectoryInfo> list = getListDirectoryDetails();
+               
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString() + ": \n" + ex.Message);
             }
         }
+
+        private Client createClient()
+        {
+            if (!txtAddressServer.Text.StartsWith("ftp://"))
+                txtAddressServer.Text += "ftp://" + txtAddressServer.Text;
+            if (cbAnonymous.IsChecked == true)
+                return new Client(txtAddressServer.Text, anonymousLogin, anonymousPassword);
+            else
+                return new Client(txtAddressServer.Text, txtLogin.Text, txtPassword.Password);
+        }
+
+        //private List<FileDirectoryInfo> getListDirectoryDetails()
+        //{
+        //    return client.ListDirectoryDetails()
+        //                    .Select(x =>
+        //                    {
+        //                        Match match = regex.Match(x);
+        //                        if (match.Length > 5)
+        //                        {
+                            
+        //                        }
+        //                    });
+        //}
     }
 }
