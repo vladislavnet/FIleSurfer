@@ -32,5 +32,18 @@ namespace FileSurfer
         {
             InitializeComponent();
         }
+
+        private void connectServer(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Client client = new Client(txtAddressServer.Text, txtLogin.Text, txtPassword.Password);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString() + ": \n" + ex.Message);
+            }
+        }
     }
 }

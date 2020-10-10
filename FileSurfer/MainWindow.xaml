@@ -22,7 +22,7 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                 <Label Content="Пароль:" Width="100"/>
-                <TextBox x:Name="txtPassword" Width="200"/>
+                <PasswordBox x:Name="txtPassword" Width="200"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="Анонимно:" Width="100"/>
