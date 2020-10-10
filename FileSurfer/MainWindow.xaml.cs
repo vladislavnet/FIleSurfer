@@ -44,7 +44,7 @@ namespace FileSurfer
             try
             {
                 client = createClient();
-                List<FileDirectoryInfo> list = getListDirectoryDetails();
+                lvFiles.DataContext = getListDirectoryDetails();
                
             }
             catch (Exception ex)
@@ -56,7 +56,7 @@ namespace FileSurfer
         private Client createClient()
         {
             if (!txtAddressServer.Text.StartsWith("ftp://"))
-                txtAddressServer.Text += "ftp://" + txtAddressServer.Text;
+                txtAddressServer.Text = "ftp://" + txtAddressServer.Text;
             if (cbAnonymous.IsChecked == true)
                 return new Client(txtAddressServer.Text, anonymousLogin, anonymousPassword);
             else
@@ -81,6 +81,7 @@ namespace FileSurfer
                                 else return new FileDirectoryInfo();
                             }).ToList();
             list.Add(new FileDirectoryInfo("", "Resources/Img/Folder.ico", "...", "", txtAddressServer.Text));
+            list.Reverse();
             return list;
         }
 
