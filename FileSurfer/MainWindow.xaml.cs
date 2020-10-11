@@ -48,9 +48,9 @@ namespace FileSurfer
             try
             {
                 txtAddressServer.Text = convertFTPAddress(txtAddressServer.Text);
-                historyDirectory = new List();
-                client = createClient(addressServer,cbAnonymous.IsChecked);
-                lvFiles.DataContext = getListDirectoryDetails();
+                historyDirectory = new HistoryDirectory(txtAddressServer.Text);
+                client = createClient(historyDirectory.CurrentDirectory, cbAnonymous.IsChecked);
+                lvFiles.DataContext = getListDirectoryDetails(historyDirectory.SecondLastDirectory, historyDirectory.CurrentDirectory);
                
             }
             catch (Exception ex)
@@ -68,15 +68,15 @@ namespace FileSurfer
                     FileDirectoryInfo fdi = (FileDirectoryInfo)(sender as StackPanel).DataContext;
                     if (fdi.Type == pathIconFolder && fdi.Name != "...")
                     {
-                        addressPath = fdi.Address + "/" + fdi.Name + "/";
-                        client = createClient(addressPath, cbAnonymous.IsChecked);
-                        lvFiles.DataContext = getListDirectoryDetails();
+                        historyDirectory.Add(combinePath(historyDirectory.CurrentDirectory, fdi.Name));
+                        client = createClient(historyDirectory.CurrentDirectory, cbAnonymous.IsChecked);
+                        lvFiles.DataContext = getListDirectoryDetails(historyDirectory.SecondLastDirectory, historyDirectory.CurrentDirectory);
                     }
                     else if (fdi.Type == pathIconFolder && fdi.Name == "...")
                     {
-                        addressPath = fdi.Address + "/" + fdi.Name + "/";
-                        client = createClient(addressPath, cbAnonymous.IsChecked);
-                        lvFiles.DataContext = getListDirectoryDetails();
+                        historyDirectory.Back();
+                        client = createClient(historyDirectory.CurrentDirectory, cbAnonymous.IsChecked);
+                        lvFiles.DataContext = getListDirectoryDetails(historyDirectory.SecondLastDirectory, historyDirectory.CurrentDirectory);
                     }
                 }
             }
@@ -133,6 +133,14 @@ namespace FileSurfer
             if (!address.StartsWith(prevAdress))
                 address = prevAdress + address;
             return address;
+        }
+
+        private string combinePath(string mainPath, string nameDirectory)
+        {
+            if (mainPath.LastOrDefault() == '/')
+                return mainPath + nameDirectory + "/";
+            else
+                return mainPath + "/" + nameDirectory + "/";
         }
 
     }
