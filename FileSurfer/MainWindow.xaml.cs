@@ -23,10 +23,16 @@ namespace FileSurfer
     {
         // Регулярное выражение, которое ищет информацию о папках и файлах 
         // в строке ответа от сервера
-        Regex regex = new Regex(@"^([d-])([rwxt-]{3}){3}\s+\d{1,}\s+.*?(\d{1,})\s+(\w+\s+\d{1,2}\s+(?:\d{4})?)(\d{1,2}:\d{2})?\s+(.+?)\s?$",
-            RegexOptions.Compiled 
-            | RegexOptions.Multiline 
-            | RegexOptions.IgnoreCase 
+        //Regex regex = new Regex(@"^([d-])([rwxt-]{3}){3}\s+\d{1,}\s+.*?(\d{1,})\s+(\w+\s+\d{1,2}\s+(?:\d{4})?)(\d{1,2}:\d{2})?\s+(.+?)\s?$",
+        //    RegexOptions.Compiled 
+        //    | RegexOptions.Multiline 
+        //    | RegexOptions.IgnoreCase 
+        //    | RegexOptions.IgnorePatternWhitespace);
+
+        Regex regex = new Regex(@"^(\S{1})\S{8}\s+\d{1,}\s+.*?(\d{1,})\s+(\w+\s+\d{1,2}\s+(?:\d{4})?)(\d{1,2}:\d{2})?\s+(.+?)\s?$",
+            RegexOptions.Compiled
+            | RegexOptions.Multiline
+            | RegexOptions.IgnoreCase
             | RegexOptions.IgnorePatternWhitespace);
 
         //Данные для ананимного входа на сервер
@@ -142,6 +148,7 @@ namespace FileSurfer
             else
                 return mainPath + "/" + nameDirectory + "/";
         }
+
 
     }
 }
