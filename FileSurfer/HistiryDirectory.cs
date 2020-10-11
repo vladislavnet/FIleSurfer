@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FileSurfer
 {
-    public class HistiryDirectory
+    public class HistoryDirectory
     {
     }
 }
