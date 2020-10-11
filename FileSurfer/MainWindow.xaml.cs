@@ -88,21 +88,27 @@ namespace FileSurfer
         }
 
         private void openContextMenu(object sender, MouseButtonEventArgs e)
-        {
-            try
-            {
-                FileDirectoryInfo fdi = (FileDirectoryInfo)(sender as StackPanel).DataContext;
-                StackPanel itemList = sender as StackPanel;
-                if (fdi.Type == pathIconFolder && fdi.Name != "...")
-                    itemList.ContextMenu = createContextMenuFolder();
-                else if (fdi.Type != pathIconFolder && fdi.Name != "...")
-                    itemList.ContextMenu = createContextMenuFile();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString() + ": \n" + ex.Message);
-            }
+        {            
+            FileDirectoryInfo fdi = (FileDirectoryInfo)(sender as StackPanel).DataContext;
+            StackPanel itemList = sender as StackPanel;
+            if (fdi.Type == pathIconFolder && fdi.Name != "...")
+                itemList.ContextMenu = createContextMenuFolder(fdi);
+            else if (fdi.Type != pathIconFolder && fdi.Name != "...")
+                itemList.ContextMenu = createContextMenuFile(fdi);           
         }
+
+
+
+        //private void openFolder_ClickContextMenu(object sender, RoutedEventArgs e)
+        //{
+        //    try
+        //    {
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.ToString() + ": \n" + ex.Message);
+        //    }
+        //}
 
 
         private List<FileDirectoryInfo> getListDirectoryDetails(string addressParent, string addressPath)
@@ -154,18 +160,19 @@ namespace FileSurfer
             lvFiles.DataContext = getListDirectoryDetails(historyDirectory.SecondLastDirectory, historyDirectory.CurrentDirectory);
         }
 
-       
+        
 
-        private ContextMenu createContextMenuFolder()
+        private ContextMenu createContextMenuFolder(FileDirectoryInfo fdi)
         {
             ContextMenu contextMenu = new ContextMenu();
             MenuItem openMenuItem = new MenuItem();
             openMenuItem.Header = "Открыть";
+            openMenuItem.Click += (sender, e) => openFolder(fdi);
             contextMenu.Items.Add(openMenuItem);
             return contextMenu;
         }
 
-        private ContextMenu createContextMenuFile()
+        private ContextMenu createContextMenuFile(FileDirectoryInfo fdi)
         {
             ContextMenu contextMenu = new ContextMenu();
             MenuItem downloadMenuItem = new MenuItem();
