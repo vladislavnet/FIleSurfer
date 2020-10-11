@@ -20,7 +20,7 @@ namespace FileSurfer
 
         private void parsingString(string value)
         {
-            if (string.IsNullOrWhiteSpace(value))
+            if (!string.IsNullOrWhiteSpace(value))
             {
                 string[] masValue = value.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 IsDirectory = masValue[0].StartsWith("d") ? true : false;

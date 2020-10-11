@@ -29,11 +29,7 @@ namespace FileSurfer
         //    | RegexOptions.IgnoreCase 
         //    | RegexOptions.IgnorePatternWhitespace);
 
-        Regex regex = new Regex(@"^(\S{1})\S{8}\s+\d{1,}\s+.*?(\d{1,})\s+(\w+\s+\d{1,2}\s+(?:\d{4})?)(\d{1,2}:\d{2})?\s+(.+?)\s?$",
-            RegexOptions.Compiled
-            | RegexOptions.Multiline
-            | RegexOptions.IgnoreCase
-            | RegexOptions.IgnorePatternWhitespace);
+      
 
         //Данные для ананимного входа на сервер
         private string prevAdress = "ftp://";
@@ -99,17 +95,9 @@ namespace FileSurfer
             List<FileDirectoryInfo> list = client.ListDirectoryDetails()
                             .Select(x =>
                             {
-                                Match match = regex.Match(x);
-                                if (match.Length > 5)
-                                {
-                                    string type = isDirectory(match.Groups[1].Value) ? pathIconFolder : getTypeImage(match.Groups[1].Value);
-                                    string size = string.Empty;
-                                    if (!isDirectory(match.Groups[1].Value))
-                                        size = (Int32.Parse(match.Groups[3].Value.Trim()) / 1024).ToString() + " кБ";
-
-                                    return new FileDirectoryInfo(size, type, match.Groups[6].Value, match.Groups[4].Value, addressPath);
-                                }
-                                else return new FileDirectoryInfo();
+                                InfoStringFTP info = new InfoStringFTP(x);
+                                string type = info.IsDirectory ? pathIconFolder : getTypeImage(string.Empty);
+                                return new FileDirectoryInfo(info.Size, type, info.Name, info.Date, addressPath);
                             }).ToList();
             list.Add(new FileDirectoryInfo("", pathIconFolder, "...", "", addressParent));
             list.Reverse();
