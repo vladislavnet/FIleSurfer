@@ -43,6 +43,7 @@ namespace FileSurfer
         public MainWindow()
         {
             InitializeComponent();
+            
         }
 
         private void connectServer(object sender, RoutedEventArgs e)
@@ -53,7 +54,6 @@ namespace FileSurfer
                 historyDirectory = new HistoryDirectory(txtAddressServer.Text);
                 client = createClient(historyDirectory.CurrentDirectory, cbAnonymous.IsChecked);
                 lvFiles.DataContext = getListDirectoryDetails(historyDirectory.SecondLastDirectory, historyDirectory.CurrentDirectory);
-               
             }
             catch (Exception ex)
             {
@@ -70,9 +70,7 @@ namespace FileSurfer
                     FileDirectoryInfo fdi = (FileDirectoryInfo)(sender as StackPanel).DataContext;
                     if (fdi.Type == pathIconFolder && fdi.Name != "...")
                     {
-                        historyDirectory.Add(combinePath(historyDirectory.CurrentDirectory, fdi.Name));
-                        client = createClient(historyDirectory.CurrentDirectory, cbAnonymous.IsChecked);
-                        lvFiles.DataContext = getListDirectoryDetails(historyDirectory.SecondLastDirectory, historyDirectory.CurrentDirectory);
+                        openFolder(fdi);
                     }
                     else if (fdi.Type == pathIconFolder && fdi.Name == "...")
                     {
@@ -89,6 +87,23 @@ namespace FileSurfer
 
         }
 
+        private void openContextMenu(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                FileDirectoryInfo fdi = (FileDirectoryInfo)(sender as StackPanel).DataContext;
+                StackPanel itemList = sender as StackPanel;
+                if (fdi.Type == pathIconFolder && fdi.Name != "...")
+                    itemList.ContextMenu = createContextMenuFolder();
+                else if (fdi.Type != pathIconFolder && fdi.Name != "...")
+                    itemList.ContextMenu = createContextMenuFile();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString() + ": \n" + ex.Message);
+            }
+        }
+
 
         private List<FileDirectoryInfo> getListDirectoryDetails(string addressParent, string addressPath)
         {
@@ -102,11 +117,6 @@ namespace FileSurfer
             list.Add(new FileDirectoryInfo("", pathIconFolder, "...", "", addressParent));
             list.Reverse();
             return list;
-        }
-
-        private bool isDirectory(string value)
-        {
-            return value == "d";
         }
 
         private string getTypeImage(string value)
@@ -137,6 +147,31 @@ namespace FileSurfer
                 return mainPath + "/" + nameDirectory + "/";
         }
 
+        private void openFolder(FileDirectoryInfo fdi)
+        {
+            historyDirectory.Add(combinePath(historyDirectory.CurrentDirectory, fdi.Name));
+            client = createClient(historyDirectory.CurrentDirectory, cbAnonymous.IsChecked);
+            lvFiles.DataContext = getListDirectoryDetails(historyDirectory.SecondLastDirectory, historyDirectory.CurrentDirectory);
+        }
 
+       
+
+        private ContextMenu createContextMenuFolder()
+        {
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem openMenuItem = new MenuItem();
+            openMenuItem.Header = "Открыть";
+            contextMenu.Items.Add(openMenuItem);
+            return contextMenu;
+        }
+
+        private ContextMenu createContextMenuFile()
+        {
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem downloadMenuItem = new MenuItem();
+            downloadMenuItem.Header = "Скачать";
+            contextMenu.Items.Add(downloadMenuItem);
+            return contextMenu;
+        }
     }
 }

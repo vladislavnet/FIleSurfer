@@ -37,7 +37,7 @@
                         <GridViewColumn Header="Файл/папка" Width="400">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <StackPanel Orientation="Horizontal" Height="36" MouseLeftButtonDown="folderDoubleClick">
+                                    <StackPanel x:Name="itemListView" Orientation="Horizontal" Height="36" MouseLeftButtonDown="folderDoubleClick" MouseRightButtonDown="openContextMenu">
                                         <Image Width="32" Height="32" Source="{Binding Type}"/>
                                         <TextBlock Margin="12,0" Text="{Binding Name}"/>
                                     </StackPanel>
