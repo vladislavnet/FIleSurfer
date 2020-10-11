@@ -33,8 +33,7 @@ namespace FileSurfer
         private string prevAdress = "ftp://";
         private string anonymousLogin = "anonymous";
         private string anonymousPassword = "anonymous@testingdomain.com";
-        private string addressPath = string.Empty;
-        private string addressServer = string.Empty;
+        private HistoryDirectory historyDirectory;
         private string pathIconFolder = "Resources/Img/Folder.ico";
         private string pathIconTXT = "Resources/Img/TXT.ico";
 
@@ -49,8 +48,7 @@ namespace FileSurfer
             try
             {
                 txtAddressServer.Text = convertFTPAddress(txtAddressServer.Text);
-                addressServer = txtAddressServer.Text;
-                addressPath = txtAddressServer.Text;
+                historyDirectory = new List();
                 client = createClient(addressServer,cbAnonymous.IsChecked);
                 lvFiles.DataContext = getListDirectoryDetails();
                
